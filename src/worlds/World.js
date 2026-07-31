@@ -194,6 +194,50 @@ class World {
         };
     }
     /**
+     * @param {number} cellSize
+     * @param {Point} anchorPos
+     * @returns {Point}
+     */
+    getNearbySpawnPos(cellSize, anchorPos) {
+        const minX = this.border.x - this.border.w + cellSize;
+        const maxX = this.border.x + this.border.w - cellSize;
+        const minY = this.border.y - this.border.h + cellSize;
+        const maxY = this.border.y + this.border.h - cellSize;
+        const tries = Math.max(8, this.settings.worldSafeSpawnTries);
+        const step = Math.max(cellSize / 2, 32);
+
+        const tryPos = (x, y) => {
+            const pos = {
+                x: Math.max(minX, Math.min(maxX, x)),
+                y: Math.max(minY, Math.min(maxY, y)),
+            };
+            if (this.isSafeSpawnPos({ x: pos.x, y: pos.y, w: cellSize, h: cellSize }))
+                return pos;
+            return null;
+        };
+
+        const direct = tryPos(anchorPos.x, anchorPos.y);
+        if (direct) return direct;
+
+        for (let i = 0; i < tries; i++) {
+            const radius = step * (1 + Math.floor(i / 8));
+            const angle = (i % 8) * (Math.PI / 4);
+            const offsetX = Math.cos(angle) * radius;
+            const offsetY = Math.sin(angle) * radius;
+            const pos = tryPos(anchorPos.x + offsetX, anchorPos.y + offsetY);
+            if (pos) return pos;
+        }
+
+        for (let i = 0; i < tries; i++) {
+            const radius = step * (0.5 + Math.random() * 2);
+            const angle = Math.random() * Math.PI * 2;
+            const pos = tryPos(anchorPos.x + Math.cos(angle) * radius, anchorPos.y + Math.sin(angle) * radius);
+            if (pos) return pos;
+        }
+
+        return this.getSafeSpawnPos(cellSize);
+    }
+    /**
      * @param {Rect} range
      */
     isSafeSpawnPos(range) {
@@ -214,9 +258,10 @@ class World {
     }
     /**
      * @param {number} cellSize
+     * @param {Player=} player
      * @returns {{ color: number, pos: Point }}
      */
-    getPlayerSpawn(cellSize) {
+    getPlayerSpawn(cellSize, player) {
         if (this.settings.worldSafeSpawnFromEjectedChance > Math.random() && this.ejectedCells.length > 0) {
             let tries = this.settings.worldSafeSpawnTries;
             while (--tries >= 0) {
@@ -227,6 +272,23 @@ class World {
                 }
             }
         }
+
+        const shouldSpawnNearSameIP = this.settings.worldSpawnNearSameIP !== false;
+        if (shouldSpawnNearSameIP && player?.router?.remoteAddress) {
+            const anchorPlayer = this.players.find((candidate) => candidate !== player
+                && candidate.router?.remoteAddress === player.router.remoteAddress
+                && candidate.hasWorld
+                && candidate.ownedCells.length > 0);
+            if (anchorPlayer?.ownedCells[0]) {
+                const anchorCell = anchorPlayer.ownedCells[0];
+                const spawnPos = this.getNearbySpawnPos(cellSize, { x: anchorCell.x, y: anchorCell.y });
+                this.handle.logger.inform?.(`same-ip spawn: anchor=${anchorPlayer.id} addr=${player.router.remoteAddress} -> ${spawnPos.x},${spawnPos.y}`);
+                return { color: null, pos: spawnPos };
+            }
+            this.handle.logger.inform?.(`same-ip spawn: no anchor found for addr=${player.router.remoteAddress}`);
+        }
+
+        this.handle.logger.inform?.(`same-ip spawn: falling back to random spawn for addr=${player?.router?.remoteAddress || "unknown"}`);
         return { color: null, pos: this.getSafeSpawnPos(cellSize) };
     }
 

@@ -2,7 +2,7 @@ let settings = {
     showingConsole: {
         PRINT: true,
         FILE: false,
-        DEBUG: false,
+        DEBUG: true,
         ACCESS: false,
         INFO: true,
         WARN: true,

@@ -123,6 +123,7 @@ All server settings are loaded from `settings.json`. If the file is missing, the
 - `worldFinderMaxItems` — maximum search hits per query
 - `worldSafeSpawnTries` — safe spawn search attempts
 - `worldSafeSpawnFromEjectedChance` — chance to spawn on ejected mass instead of empty space
+- `worldSpawnNearSameIP` — when enabled, a new player from the same IP will try to spawn near an existing player using that IP
 - `worldPlayerDisposeDelay` — ticks before disconnected players are removed
 - `worldEatMult` — eat size multiplier for collision/eating rules
 - `worldEatOverlapDiv` — overlap divisor for cell eating threshold
