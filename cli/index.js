@@ -1,4 +1,5 @@
 const fs = require("fs");
+const crypto = require("crypto");
 const DefaultSettings = require("../src/Settings");
 const ServerHandle = require("../src/ServerHandle");
 const { genCommand } = require("../src/commands/CommandList");
@@ -15,6 +16,7 @@ const DefaultGamemodes = [
     require("../src/gamemodes/Teams"),
     require("../src/gamemodes/LastManStanding")
 ];
+const { AdminPanel } = require("../src/admin/AdminPanel");
 
 /** @returns {DefaultSettings} */
 function readSettings() {
@@ -37,6 +39,7 @@ const currentHandle = new ServerHandle(settings);
 overwriteSettings(currentHandle.settings);
 require("./log-handler")(currentHandle);
 const logger = currentHandle.logger;
+const adminPanel = new AdminPanel(currentHandle);
 
 let commandStreamClosing = false;
 const commandStream = readline.createInterface({
@@ -51,6 +54,7 @@ commandStream.once("SIGINT", () => {
     logger.inform("command stream caught SIGINT");
     commandStreamClosing = true;
     commandStream.close();
+    adminPanel.stop();
     currentHandle.stop();
     process.exitCode = 0;
     setTimeout(() => void process.exit(0), 1000);
@@ -91,6 +95,7 @@ currentHandle.commands.register(
          * @param {ServerHandle} context
          */
         exec: (handle, context, args) => {
+            adminPanel.stop();
             handle.stop();
             commandStream.close();
             commandStreamClosing = true;
@@ -120,6 +125,25 @@ currentHandle.commands.register(
             logger.print("done");
         }
     }),
+    genCommand({
+        name: "gentoken",
+        args: "",
+        desc: "generate a new admin API token and save its hash to settings.json",
+        /**
+         * @param {ServerHandle} context
+         */
+        exec: (handle, context, args) => {
+            const token = crypto.randomBytes(20).toString("hex");
+            const tokenHash = crypto.createHash("sha256").update(token).digest("hex");
+            const settings = readSettings();
+            settings.adminPanelTokens = Array.isArray(settings.adminPanelTokens) ? settings.adminPanelTokens : [];
+            settings.adminPanelTokens.push(tokenHash);
+            overwriteSettings(settings);
+            handle.setSettings(settings);
+            logger.print(`generated token: ${token}`);
+            logger.print("saved hashed token to settings.json");
+        }
+    }),
 );
 
 function ask() {
@@ -137,3 +161,4 @@ setTimeout(() => {
     ask();
 }, 1000);
 currentHandle.start();
+adminPanel.start();

@@ -52,6 +52,41 @@ Then use these commands:
 
 The first run will create `settings.json` from defaults if it does not exist.
 
+## Admin panel
+
+The built-in admin panel is enabled by default and can be opened in a browser at:
+
+```text
+http://127.0.0.1:84/admin
+```
+
+You can change the port and path in `settings.json` with `adminPanelPort` and `adminPanelPath`.
+
+### Generating and using tokens
+
+Generate a new admin API token from the CLI console with:
+
+```bash
+gentoken
+```
+
+That command prints a new token once and stores its SHA-256 hash in `settings.json` under `adminPanelTokens`.
+
+To sign in, open the admin panel and enter the token. Tokens are single-use and are removed from the active token list after a successful login. The panel also keeps the session tied to the browser fingerprint and cookie for extra protection.
+
+### Security notes
+
+The admin panel can run server commands, but some high-risk commands are intentionally blocked from the web shell to reduce abuse:
+
+- `eval`
+- `forbid`
+- `pardon`
+- `gentoken`
+
+You can still use `setting` for normal server settings, but the web shell will refuse attempts to change anything related to admin-panel configuration or stored tokens such as `adminPanelEnabled`, `adminPanelPort`, `adminPanelPath`, `adminPanelTokens`, or `adminPanelSessions`.
+
+If you need to rotate tokens or change admin-panel configuration, use the CLI directly and keep the admin panel behind a trusted network or reverse proxy.
+
 ## Connect clients
 
 Use one of these clients:

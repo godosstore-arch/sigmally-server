@@ -1,4 +1,10 @@
 {
+    "adminPanelEnabled": true,
+    "adminPanelPort": 84,
+    "adminPanelPath": "/admin",
+    "adminPanelTokens": [],
+    "adminPanelSessions": [
+    ],
     "listenerForbiddenIPs": [],
     "listenerAcceptedOrigins": [],
     "listenerMaxConnections": 100,

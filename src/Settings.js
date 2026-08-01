@@ -1,4 +1,11 @@
 const value = Object.seal({
+    adminPanelEnabled: true,
+    adminPanelPort: 84,
+    adminPanelPath: "/admin",
+    /** @type {string[]} */
+    adminPanelTokens: [],
+    adminPanelSessions: [],
+
     /** @type {IPAddress[]} */
     listenerForbiddenIPs: [],
     /** @type {string[]} */
