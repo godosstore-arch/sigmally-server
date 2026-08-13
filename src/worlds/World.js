@@ -273,6 +273,21 @@ class World {
             }
         }
 
+        const shouldSpawnInLookDirection = this.settings.worldSpawnInLookDirection === true;
+        if (shouldSpawnInLookDirection && player?.router) {
+            const mouseX = Number.isFinite(player.router.mouseX) ? player.router.mouseX : NaN;
+            const mouseY = Number.isFinite(player.router.mouseY) ? player.router.mouseY : NaN;
+            if (Number.isFinite(mouseX) && Number.isFinite(mouseY)) {
+                const anchorX = Math.min(this.border.x + this.border.w, Math.max(this.border.x - this.border.w, mouseX));
+                const anchorY = Math.min(this.border.y + this.border.h, Math.max(this.border.y - this.border.h, mouseY));
+                const spawnPos = this.getNearbySpawnPos(cellSize, { x: anchorX, y: anchorY });
+                if (spawnPos) {
+                    this.handle.logger.inform?.(`look-direction spawn: addr=${player.router.remoteAddress || "unknown"} -> ${spawnPos.x},${spawnPos.y}`);
+                    return { color: null, pos: spawnPos };
+                }
+            }
+        }
+
         const shouldSpawnNearSameIP = this.settings.worldSpawnNearSameIP !== false;
         if (shouldSpawnNearSameIP && player?.router?.remoteAddress) {
             const anchorPlayer = this.players.find((candidate) => candidate !== player

@@ -34,6 +34,7 @@ const value = Object.seal({
     worldSafeSpawnTries: 64,
     worldSafeSpawnFromEjectedChance: 0, // OG: 0.8
     worldSpawnNearSameIP: true,
+    worldSpawnInLookDirection: false,
     worldPlayerDisposeDelay: 25 * 60,
 
     worldEatMult: 1.140175425099138,

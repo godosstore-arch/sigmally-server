@@ -3,8 +3,7 @@
     "adminPanelPort": 84,
     "adminPanelPath": "/admin",
     "adminPanelTokens": [],
-    "adminPanelSessions": [
-    ],
+    "adminPanelSessions": [],
     "listenerForbiddenIPs": [],
     "listenerAcceptedOrigins": [],
     "listenerMaxConnections": 100,
@@ -27,6 +26,7 @@
     "worldSafeSpawnTries": 64,
     "worldSafeSpawnFromEjectedChance": 0,
     "worldSpawnNearSameIP": true,
+    "worldSpawnInLookDirection": true,
     "worldPlayerDisposeDelay": 1500,
     "worldEatMult": 1.140175425099138,
     "worldEatOverlapDiv": 3,

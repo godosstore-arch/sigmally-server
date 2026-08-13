@@ -1,0 +1,24 @@
+2026-08-13 13:16:39.850 [INFO] starting
+2026-08-13 13:16:39.855 [DEBUG] listener opening at 80
+2026-08-13 13:16:39.860 [INFO] ticker begin
+2026-08-13 13:16:39.860 [INFO] OgarII 1.3.6
+2026-08-13 13:16:39.860 [INFO] gamemode: FFA
+2026-08-13 13:16:39.882 [INFO] admin panel listening on port 84 at /admin
+2026-08-13 13:16:39.885 [INFO] listener open at 80
+2026-08-13 13:16:40.110 [ACCESS] REQUEST FROM 127.0.0.1, not secure, Origin: https://one.sigmally.com
+2026-08-13 13:16:40.110 [DEBUG] client verification passed
+2026-08-13 13:16:40.113 [ACCESS] CONNECTION FROM 127.0.0.1
+2026-08-13 13:16:40.119 [ACCESS] REQUEST FROM ::1, not secure, Origin: https://one.sigmally.com
+2026-08-13 13:16:40.119 [DEBUG] client verification passed
+2026-08-13 13:16:40.119 [ACCESS] CONNECTION FROM ::1
+2026-08-13 13:16:40.125 [ACCESS] REQUEST FROM 127.0.0.1, not secure, Origin: https://one.sigmally.com
+2026-08-13 13:16:40.125 [DEBUG] client verification passed
+2026-08-13 13:16:40.125 [ACCESS] CONNECTION FROM 127.0.0.1
+2026-08-13 13:16:40.142 [DEBUG] added a world with id 1
+2026-08-13 13:16:40.850 [DEBUG] command stream open
+2026-08-13 13:16:43.712 [INFO] command stream caught SIGINT
+2026-08-13 13:16:43.714 [INFO] stopping
+2026-08-13 13:16:43.830 [DEBUG] removed world with id 1
+2026-08-13 13:16:43.830 [DEBUG] listener closing
+2026-08-13 13:16:43.831 [INFO] ticker stop
+2026-08-13 13:16:44.834 [DEBUG] process ended with code 0
