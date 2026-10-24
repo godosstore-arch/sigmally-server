@@ -467,6 +467,27 @@ module.exports = (commands, chatCommands) => {
             }
         }),
         genCommand({
+            name: "massall",
+            args: "<mass>",
+            desc: "set cell mass to all cells of every alive player",
+            /**
+             * @param {ServerHandle} context
+             */
+            exec: (handle, context, args) => {
+                const mass = getFloat(args, handle, 0, "mass");
+                if (mass === false)
+                    return;
+                let count = 0;
+                for (const id in handle.players) {
+                    const player = handle.players[id];
+                    if (player.state !== 0) continue;
+                    for (let i = 0, l = player.ownedCells.length; i < l; i++) player.ownedCells[i].mass = mass;
+                    count++;
+                }
+                handle.logger.print(`set ${mass} mass for ${count} player${count === 1 ? "" : "s"}`);
+            }
+        }),
+        genCommand({
             name: "merge",
             args: "<id>",
             desc: "instantly merge a player",
