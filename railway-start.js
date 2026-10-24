@@ -20,5 +20,9 @@ settings.adminPanelEnabled = adminToken.length > 0;
 settings.adminPanelTokens = adminToken ? [crypto.createHash("sha256").update(adminToken).digest("hex")] : [];
 settings.adminPanelKeepTokens = true;
 fs.writeFileSync("./settings.json", JSON.stringify(settings, null, 4), "utf-8");
-require("./gateway")(publicPort, GAME_PORT, ADMIN_PORT, settings.adminPanelPath || "/admin");
+// Per-connection DEBUG/ACCESS lines only cost CPU and disk on a small host; keep them out of the log file
+const logSettings = JSON.parse(fs.readFileSync("./log-settings.json", "utf-8"));
+logSettings.showingFile.DEBUG = logSettings.showingFile.ACCESS = false;
+fs.writeFileSync("./log-settings.json", JSON.stringify(logSettings, null, 4), "utf-8");
+require("./gateway")(publicPort, ADMIN_PORT, settings.adminPanelPath || "/admin");
 require("./cli/index.js");

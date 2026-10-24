@@ -2,6 +2,7 @@ const { WebSocket, WebSocketServer } = require("ws");
 
 const Connection = require("./Connection");
 const ChatChannel = require("./ChatChannel");
+const ExternalServer = require("./ExternalServer");
 const { filterIPAddress } = require("../primitives/Misc");
 
 class Listener {
@@ -27,9 +28,19 @@ class Listener {
 
     open() {
         if (this.listenerSocket !== null) return false;
-        this.logger.debug(`listener opening at ${this.settings.listeningPort}`);
-        this.listenerSocket = new WebSocketServer({
+        // A host-provided HTTP server (see gateway.js) lets the game share one public port without an extra proxy hop
+        const server = ExternalServer.server;
+        this.logger.debug(`listener opening at ${server ? "external server" : this.settings.listeningPort}`);
+        if (server) {
+            this.listenerSocket = new WebSocketServer({
+                server,
+                perMessageDeflate: false,
+                verifyClient: this.verifyClient.bind(this)
+            });
+            server.listening ? this.onOpen() : server.once("listening", this.onOpen.bind(this));
+        } else this.listenerSocket = new WebSocketServer({
             port: this.settings.listeningPort,
+            perMessageDeflate: false,
             verifyClient: this.verifyClient.bind(this)
         }, this.onOpen.bind(this));
         this.listenerSocket.on("connection", this.onConnection.bind(this));

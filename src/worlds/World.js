@@ -282,7 +282,7 @@ class World {
                 const anchorY = Math.min(this.border.y + this.border.h, Math.max(this.border.y - this.border.h, mouseY));
                 const spawnPos = this.getNearbySpawnPos(cellSize, { x: anchorX, y: anchorY });
                 if (spawnPos) {
-                    this.handle.logger.inform?.(`look-direction spawn: addr=${player.router.remoteAddress || "unknown"} -> ${spawnPos.x},${spawnPos.y}`);
+                    this.handle.logger.debug?.(`look-direction spawn: addr=${player.router.remoteAddress || "unknown"} -> ${spawnPos.x},${spawnPos.y}`);
                     return { color: null, pos: spawnPos };
                 }
             }
