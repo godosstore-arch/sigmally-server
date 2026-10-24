@@ -50,6 +50,7 @@ const commandStream = readline.createInterface({
     historySize: 64,
     removeHistoryDuplicates: true
 });
+commandStream.on("close", () => { commandStreamClosing = true; });
 commandStream.once("SIGINT", () => {
     logger.inform("command stream caught SIGINT");
     commandStreamClosing = true;

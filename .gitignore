@@ -15,3 +15,6 @@ build
 
 # other
 **/.DS_store
+
+# runtime logs
+logs/old
