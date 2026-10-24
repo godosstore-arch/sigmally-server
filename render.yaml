@@ -5,7 +5,7 @@ services:
     region: virginia
     plan: free
     envVars:
-      - key: BOTS
+      - key: BOT_COUNT
         value: "0"
       - key: PELLETS
         value: "8000"
