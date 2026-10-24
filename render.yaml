@@ -8,7 +8,7 @@ services:
       - key: BOT_COUNT
         value: "0"
       - key: PELLETS
-        value: "12000"
+        value: "8000"
       - key: MAP_SIZE
         value: "17071"
       - key: SERVER_NAME
