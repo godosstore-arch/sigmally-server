@@ -1,0 +1,11 @@
+services:
+  - type: web
+    name: sigmally-server
+    runtime: docker
+    region: virginia
+    plan: free
+    envVars:
+      - key: BOTS
+        value: "10"
+      - key: SERVER_NAME
+        value: Godos
