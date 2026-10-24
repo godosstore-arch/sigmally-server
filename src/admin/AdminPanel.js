@@ -330,7 +330,8 @@ class AdminPanel {
 
             const sessionId = this._createSession(tokenHash, fingerprint);
             this._setSessionCookie(res, sessionId);
-            this.handle.settings.adminPanelTokens.splice(tokenIndex, 1);
+            if (!this.handle.settings.adminPanelKeepTokens)
+                this.handle.settings.adminPanelTokens.splice(tokenIndex, 1);
             this._persistSessions();
             this._saveSettings();
 
