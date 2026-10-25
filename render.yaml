@@ -7,8 +7,8 @@ services:
     envVars:
       - key: BOT_COUNT
         value: "0"
-      - key: PELLETS
-        value: "8000"
+      - key: PELLET_COUNT
+        value: "0"
       - key: MAP_SIZE
         value: "17071"
       - key: SERVER_NAME

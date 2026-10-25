@@ -9,7 +9,8 @@ settings.adminPanelPort = ADMIN_PORT;
 if (process.env.SERVER_NAME) settings.serverName = process.env.SERVER_NAME;
 // Defaults tuned for low-CPU hosts (Render free); override with env vars
 settings.worldPlayerBotsPerWorld = Number(process.env.BOT_COUNT || 0);
-settings.pelletCount = Number(process.env.PELLETS || 8000);
+// No food by default (mass comes from the admin panel); PELLET_COUNT turns it back on
+settings.pelletCount = Number(process.env.PELLET_COUNT || 0);
 settings.worldMapW = settings.worldMapH = Number(process.env.MAP_SIZE || 17071);
 settings.virusMinCount = Number(process.env.VIRUS_MIN || 10);
 settings.virusMaxCount = Number(process.env.VIRUS_MAX || 15);
