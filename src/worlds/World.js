@@ -15,6 +15,20 @@ const { fullyIntersects } = require("../primitives/Misc");
 /**
  * @implements {Spawner}
  */
+/**
+ * Multibox team tag: the Sigmally tag (clan) field, or a name starting with T + number such as "T1 Godos".
+ * @param {Player} player
+ */
+function getSpawnTag(player) {
+    if (!player) return "";
+    const attrs = player.router && player.router.spawningAttributes;
+    const clan = String((attrs && attrs.clan) || player.clan || "").trim().toLowerCase();
+    if (clan) return clan;
+    const name = String((attrs && attrs.name) || player.cellName || "");
+    const match = /^\s*[\[(]?\s*(t\d+)(?![a-z])/i.exec(name);
+    return match ? match[1].toLowerCase() : "";
+}
+
 class World {
     /**
      * @param {ServerHandle} handle
@@ -238,6 +252,29 @@ class World {
         return this.getSafeSpawnPos(cellSize);
     }
     /**
+     * Free spot just outside anchorCell's edge, trying rings of increasing radius.
+     * @param {number} cellSize
+     * @param {Cell} anchorCell
+     * @returns {Point | null}
+     */
+    getSpawnPosBeside(cellSize, anchorCell) {
+        const minX = this.border.x - this.border.w + cellSize;
+        const maxX = this.border.x + this.border.w - cellSize;
+        const minY = this.border.y - this.border.h + cellSize;
+        const maxY = this.border.y + this.border.h - cellSize;
+        for (let ring = 0; ring < 4; ring++) {
+            const radius = anchorCell.size + cellSize + 20 + ring * cellSize;
+            const offset = Math.random() * Math.PI * 2;
+            for (let i = 0; i < 12; i++) {
+                const angle = offset + i * (Math.PI / 6);
+                const x = Math.max(minX, Math.min(maxX, anchorCell.x + Math.cos(angle) * radius));
+                const y = Math.max(minY, Math.min(maxY, anchorCell.y + Math.sin(angle) * radius));
+                if (this.isSafeSpawnPos({ x, y, w: cellSize, h: cellSize })) return { x, y };
+            }
+        }
+        return null;
+    }
+    /**
      * @param {Rect} range
      */
     isSafeSpawnPos(range) {
@@ -270,6 +307,21 @@ class World {
                     this.removeCell(cell);
                     return { color: cell.color, pos: { x: cell.x, y: cell.y } };
                 }
+            }
+        }
+
+        // Multiboxing: spawn next to a living teammate that uses the same tag (clan), e.g. "T1"
+        const tag = getSpawnTag(player);
+        if (tag && this.settings.worldSpawnNearSameTag !== false) {
+            let anchorCell = null;
+            for (const candidate of this.players) {
+                if (candidate === player || candidate.ownedCells.length === 0 || getSpawnTag(candidate) !== tag) continue;
+                for (const cell of candidate.ownedCells)
+                    if (anchorCell === null || cell.size > anchorCell.size) anchorCell = cell;
+            }
+            if (anchorCell !== null) {
+                const spawnPos = this.getSpawnPosBeside(cellSize, anchorCell);
+                if (spawnPos) return { color: null, pos: spawnPos };
             }
         }
 

@@ -14,7 +14,7 @@ settings.pelletCount = Number(process.env.PELLET_COUNT || 0);
 settings.worldMapW = settings.worldMapH = Number(process.env.MAP_SIZE || 17071);
 settings.virusMinCount = Number(process.env.VIRUS_MIN || 10);
 settings.virusMaxCount = Number(process.env.VIRUS_MAX || 15);
-settings.playerMaxCells = Number(process.env.MAX_CELLS || 12);
+settings.playerMaxCells = Number(process.env.MAX_CELLS || 16);
 // Behind the host's proxy every player shares the proxy's IP, so per-IP limits would lock everyone out
 settings.listenerMaxConnectionsPerIP = 0;
 settings.worldSpawnNearSameIP = false;
