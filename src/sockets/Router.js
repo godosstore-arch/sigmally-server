@@ -67,6 +67,9 @@ class Router {
     /** @virtual */
     onSpawnRequest() {
         if (!this.hasPlayer) return;
+        // splits/ejects pressed while dead or loading would otherwise fire right after respawning
+        this.splitAttempts = 0;
+        this.ejectAttempts = 0;
         if ('name' in this.spawningAttributes) {
             let name = this.spawningAttributes.name.slice(0, this.settings.playerMaxNameLength);
             /** @type {string} */

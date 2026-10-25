@@ -501,7 +501,7 @@ class AdminPanel {
   <head>
     <meta charset="utf-8">
     <title>Admin Shell</title>
-    <style>body{margin:0;background:radial-gradient(circle at top left,#1e1d3c,#07070c 58%);color:#ecf0ff;font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,Segoe UI,sans-serif;min-height:100vh}*{box-sizing:border-box}main{width:100%;max-width:980px;margin:0 auto;padding:28px}header{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:24px}h1{margin:0;font-size:2.2rem}p{margin:8px 0 0;color:#a3b4d3}a.logout{display:inline-flex;align-items:center;padding:10px 18px;border-radius:14px;background:rgba(255,255,255,.08);color:#fff;text-decoration:none;transition:background .2s ease}a.logout:hover{background:rgba(255,255,255,.14)}.terminal{min-height:320px;max-height:520px;overflow:auto;background:rgba(0,0,0,.16);border:1px solid rgba(255,255,255,.1);border-radius:20px;padding:18px;font-family:ui-monospace,Menlo,Monaco,Consolas,monospace;font-size:.95rem;color:#e9efff;line-height:1.6;white-space:pre-wrap;word-break:break-word}form{display:flex;gap:12px;flex-wrap:wrap;margin-top:18px}input{flex:1 1 0;border:1px solid rgba(255,255,255,.14);border-radius:14px;padding:14px 16px;background:rgba(255,255,255,.05);color:#fff;outline:none;min-width:220px}input:focus{border-color:rgba(255,255,255,.32)}button{border:none;padding:14px 20px;border-radius:14px;background:#6c63ff;color:#fff;cursor:pointer;transition:transform .2s ease,background .2s ease}button:hover{transform:translateY(-1px);background:#8376ff}.line{margin:0 0 10px}.line strong{color:#f6e05e}.line.error strong{color:#ff6b6b}.line.command strong{color:#7ef6d5}main{max-width:1280px}.map-wrap{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:18px;margin-bottom:24px}@media(max-width:860px){.map-wrap{grid-template-columns:1fr}}canvas{width:100%;aspect-ratio:1/1;background:#0b0c16;border:1px solid rgba(255,255,255,.1);border-radius:20px;cursor:crosshair;display:block}.side{background:rgba(0,0,0,.16);border:1px solid rgba(255,255,255,.1);border-radius:20px;padding:16px;display:flex;flex-direction:column;gap:12px;max-height:80vh;overflow:auto}.side h2{margin:0;font-size:1.1rem}.plist{display:flex;flex-direction:column;gap:6px}.prow{display:flex;justify-content:space-between;gap:8px;padding:8px 10px;border-radius:10px;background:rgba(255,255,255,.04);cursor:pointer;font-size:.92rem}.prow.sel{background:rgba(108,99,255,.35)}.prow span:last-child{color:#a3b4d3}.actions{display:none;flex-direction:column;gap:8px}.actions.show{display:flex}.actions .row{display:flex;gap:8px}.actions input{min-width:0;flex:1}.actions button{padding:10px 12px}.btn-danger{background:#e5484d}.btn-danger:hover{background:#f2555a}.muted{color:#a3b4d3;font-size:.85rem;margin:0}</style>
+    <style>body{margin:0;background:radial-gradient(circle at top left,#1e1d3c,#07070c 58%);color:#ecf0ff;font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,Segoe UI,sans-serif;min-height:100vh}*{box-sizing:border-box}main{width:100%;max-width:980px;margin:0 auto;padding:28px}header{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:24px}h1{margin:0;font-size:2.2rem}p{margin:8px 0 0;color:#a3b4d3}a.logout{display:inline-flex;align-items:center;padding:10px 18px;border-radius:14px;background:rgba(255,255,255,.08);color:#fff;text-decoration:none;transition:background .2s ease}a.logout:hover{background:rgba(255,255,255,.14)}.terminal{min-height:320px;max-height:520px;overflow:auto;background:rgba(0,0,0,.16);border:1px solid rgba(255,255,255,.1);border-radius:20px;padding:18px;font-family:ui-monospace,Menlo,Monaco,Consolas,monospace;font-size:.95rem;color:#e9efff;line-height:1.6;white-space:pre-wrap;word-break:break-word}form{display:flex;gap:12px;flex-wrap:wrap;margin-top:18px}input{flex:1 1 0;border:1px solid rgba(255,255,255,.14);border-radius:14px;padding:14px 16px;background:rgba(255,255,255,.05);color:#fff;outline:none;min-width:220px}input:focus{border-color:rgba(255,255,255,.32)}button{border:none;padding:14px 20px;border-radius:14px;background:#6c63ff;color:#fff;cursor:pointer;transition:transform .2s ease,background .2s ease}button:hover{transform:translateY(-1px);background:#8376ff}.line{margin:0 0 10px}.line strong{color:#f6e05e}.line.error strong{color:#ff6b6b}.line.command strong{color:#7ef6d5}main{max-width:1280px}.map-wrap{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:18px;margin-bottom:24px}@media(max-width:860px){.map-wrap{grid-template-columns:1fr}}canvas{width:100%;aspect-ratio:1/1;background:#0b0c16;border:1px solid rgba(255,255,255,.1);border-radius:20px;cursor:crosshair;display:block;touch-action:none}.side{background:rgba(0,0,0,.16);border:1px solid rgba(255,255,255,.1);border-radius:20px;padding:16px;display:flex;flex-direction:column;gap:12px;max-height:80vh;overflow:auto}.side h2{margin:0;font-size:1.1rem}.plist{display:flex;flex-direction:column;gap:6px}.prow{display:flex;justify-content:space-between;gap:8px;padding:8px 10px;border-radius:10px;background:rgba(255,255,255,.04);cursor:pointer;font-size:.92rem}.prow.sel{background:rgba(108,99,255,.35)}.prow span:last-child{color:#a3b4d3}.actions{display:none;flex-direction:column;gap:8px}.actions.show{display:flex}.actions .row{display:flex;gap:8px}.actions input{min-width:0;flex:1}.actions button{padding:10px 12px}.btn-danger{background:#e5484d}.btn-danger:hover{background:#f2555a}.muted{color:#a3b4d3;font-size:.85rem;margin:0}</style>
   </head>
   <body>
     <main>
@@ -527,7 +527,7 @@ class AdminPanel {
             <button id="btn-massall" type="button">Masa a todos</button>
             <button id="btn-killall" class="btn-danger" type="button">Matar a todos</button>
           </div>
-          <p class="muted">Clic en una célula o en un jugador para seleccionarlo. Rueda del mouse: zoom. Arrastrar: mover.</p>
+          <p class="muted">Clic en una célula o en un jugador para seleccionarlo. Arrastra una célula para mover a ese jugador. Arrastra el fondo para moverte por el mapa. Rueda del mouse: zoom.</p>
         </aside>
       </section>
       <div class="terminal" id="terminal"></div>
@@ -730,28 +730,50 @@ class AdminPanel {
         if (zoom === 1) panX = panY = 0;
         draw();
       }, { passive: false });
-      canvas.addEventListener('mousedown', (event) => { dragging = { p: canvasPoint(event), moved: false }; });
-      window.addEventListener('mouseup', (event) => {
-        if (dragging && !dragging.moved && snapshot) {
-          const v = view(), [wx, wy] = toWorld(v, ...canvasPoint(event));
-          let best = null;
-          for (const c of snapshot.cells) {
-            if (c[3] !== 0) continue;
-            const d = Math.hypot(c[0] - wx, c[1] - wy);
-            if (d <= Math.max(c[2], 8 / v.scale) && (!best || c[2] < best[2])) best = c;
-          }
-          select(best ? best[5] : 0);
+      function cellAt(sx, sy) {
+        const v = view(), [wx, wy] = toWorld(v, sx, sy);
+        let best = null;
+        for (const c of snapshot.cells) {
+          if (c[3] !== 0) continue;
+          const d = Math.hypot(c[0] - wx, c[1] - wy);
+          if (d <= Math.max(c[2], 8 / v.scale) && (!best || c[2] < best[2])) best = c;
         }
-        dragging = null;
+        return best;
+      }
+      // Pointer events cover mouse and touch: drag a player's cell to teleport them, drag empty space to pan
+      canvas.addEventListener('pointerdown', (event) => {
+        if (!snapshot) return;
+        const p = canvasPoint(event), cell = cellAt(p[0], p[1]);
+        dragging = { p, start: p, moved: false, playerId: cell ? cell[5] : 0, size: cell ? cell[2] : 0 };
+        try { canvas.setPointerCapture(event.pointerId); } catch (_) { }
       });
-      window.addEventListener('mousemove', (event) => {
+      canvas.addEventListener('pointermove', (event) => {
         if (!dragging || !snapshot) return;
         const p = canvasPoint(event), v = view();
-        if (Math.hypot(p[0] - dragging.p[0], p[1] - dragging.p[1]) > 3) dragging.moved = true;
+        if (Math.hypot(p[0] - dragging.start[0], p[1] - dragging.start[1]) > 4) dragging.moved = true;
         if (!dragging.moved) return;
+        if (dragging.playerId) {
+          dragging.p = p; draw();
+          ctx.beginPath(); ctx.arc(p[0], p[1], Math.max(dragging.size * v.scale, 6), 0, Math.PI * 2);
+          ctx.setLineDash([6, 6]); ctx.lineWidth = 2; ctx.strokeStyle = '#fff'; ctx.stroke(); ctx.setLineDash([]);
+          return;
+        }
         panX -= (p[0] - dragging.p[0]) / v.scale; panY -= (p[1] - dragging.p[1]) / v.scale;
         dragging.p = p; draw();
       });
+      canvas.addEventListener('pointerup', (event) => {
+        if (!dragging || !snapshot) { dragging = null; return; }
+        const d = dragging; dragging = null;
+        if (!d.moved) { select(d.playerId); return; }
+        if (!d.playerId) return;
+        const v = view(), from = toWorld(v, d.start[0], d.start[1]), to = toWorld(v, d.p[0], d.p[1]);
+        const own = snapshot.cells.filter((c) => c[3] === 0 && c[5] === d.playerId);
+        if (own.length === 0) return;
+        const cx = own.reduce((s, c) => s + c[0], 0) / own.length, cy = own.reduce((s, c) => s + c[1], 0) / own.length;
+        select(d.playerId);
+        run('tp ' + d.playerId + ' ' + Math.round(cx + to[0] - from[0]) + ' ' + Math.round(cy + to[1] - from[1]));
+      });
+      canvas.addEventListener('pointercancel', () => { dragging = null; draw(); });
 
       fetchWorld();
       setInterval(fetchWorld, 500);

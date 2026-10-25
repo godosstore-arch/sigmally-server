@@ -488,6 +488,33 @@ module.exports = (commands, chatCommands) => {
             }
         }),
         genCommand({
+            name: "tp",
+            args: "<id> <x> <y>",
+            desc: "move all of a player's cells to a position, keeping their formation",
+            /**
+             * @param {ServerHandle} context
+             */
+            exec: (handle, context, args) => {
+                const player = getPlayerByID(args, handle, 0, true);
+                const x = getFloat(args, handle, 1, "x");
+                const y = getFloat(args, handle, 2, "y");
+                if (player === false || x === false || y === false)
+                    return;
+                const cells = player.ownedCells;
+                if (cells.length === 0) return void handle.logger.print("player has no cells");
+                let cx = 0, cy = 0;
+                for (const cell of cells) { cx += cell.x; cy += cell.y; }
+                cx /= cells.length; cy /= cells.length;
+                const border = player.world.border;
+                for (const cell of cells) {
+                    cell.x = Math.max(border.x - border.w, Math.min(border.x + border.w, cell.x + x - cx));
+                    cell.y = Math.max(border.y - border.h, Math.min(border.y + border.h, cell.y + y - cy));
+                    player.world.updateCell(cell);
+                }
+                handle.logger.print(`moved player ${player.id} to ${Math.round(x)}, ${Math.round(y)}`);
+            }
+        }),
+        genCommand({
             name: "merge",
             args: "<id>",
             desc: "instantly merge a player",
