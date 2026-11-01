@@ -1,0 +1,17 @@
+{
+  "name": "asiste",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Asiste: recepción por WhatsApp para clínicas en Latinoamérica",
+  "type": "module",
+  "author": "Godos Salvador",
+  "license": "UNLICENSED",
+  "engines": { "node": ">=22.5" },
+  "scripts": {
+    "start": "node --disable-warning=ExperimentalWarning server.js",
+    "dev": "node --disable-warning=ExperimentalWarning --watch server.js",
+    "test": "node --disable-warning=ExperimentalWarning --test test/*.test.js",
+    "seed:demo": "node --disable-warning=ExperimentalWarning scripts/seed-demo.mjs",
+    "build:prototype": "node scripts/build-prototype.mjs"
+  }
+}

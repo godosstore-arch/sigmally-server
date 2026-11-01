@@ -1,0 +1,7 @@
+Demo de Asiste — subir esta carpeta completa a https://app.netlify.com/drop
+
+Link por clínica:
+  https://SU-LINK/?clinica=Clínica%20Dental%20San%20Miguel&ciudad=Piura&tipo=dental&pais=PE
+
+Tipos: dental, estetica, fisioterapia, psicologia, pediatria, ginecologia, oftalmologia, nutricion, general, dermatologia
+Países: PE, MX, CO, CL, AR, EC, BO, UY, PY, CR, PA, DO, GT
