@@ -21,7 +21,7 @@ const R = {
   deny: /^ (no|no gracias|nop|nel|ninguno|ninguna|ninguna me sirve|no puedo|no me acomoda)( gracias)? $/,
   book: / (cita|turno|agendar|agenda|reservar|reserva|separar|sacar (una )?(cita|hora|turno)|pedir (una )?(cita|hora|turno)|quiero (ir|atenderme|una consulta|que me atiendan|ser atendid)|me (pueden|puede) atender|atienden (hoy|manana)|disponib|tienen (espacio|cupo|turno|horario)|hay (espacio|cupo|horario|turno)|horarios? (libre|disponible)|para (hoy|manana)|consulta para|una consulta|quisiera (una|un|atenderme|ir)|necesito (una|un) (cita|consulta|turno|hora)|programar)/,
   price: / (precio|precios|cuanto (cuesta|cuestan|sale|salen|vale|valen|es|seria|cobran|me cobran)|costo|costos|tarifa|valor|presupuesto|cotiza|promocion|promo|descuento|oferta)/,
-  hours: / (horario|horarios de atencion|a que hora (abren|cierran|atienden)|abren|cierran|atienden (los )?(sabados|domingos|feriados)|que dias atienden|dias de atencion|hasta que hora)/,
+  hours: / (horario|horarios de atencion|a que hora (abren|cierran|atienden)|abren|cierran|(atienden|trabajan|abren) (los |el |en )?(sabado|domingo|feriado)s?|que dias atienden|dias de atencion|hasta que hora)/,
   location: / (donde (estan|queda|quedan|se ubican|es|esta)|direccion|ubicacion|como llego|referencia|mapa|en que (calle|distrito|zona)|sede|local)/,
   payment: / (yape|yapear|plin|tarjeta|efectivo|transferencia|formas? de pago|medios? de pago|metodos? de pago|aceptan|visa|mastercard|pos |nequi|daviplata|mercado pago|cuotas)/,
   insurance: / (seguro|seguros|eps|sis|essalud|aseguradora|cobertura|convenio|isapre|fonasa|obra social|prepaga|prepagada|reembolso de seguro)/,
@@ -33,7 +33,8 @@ const R = {
   optin: /^ (alta|suscribir|volver a recibir)( por favor)? $/,
   myAppt: / (mi cita|mi turno|mi hora|cuando es mi|a que hora es mi|tengo (una )?(cita|turno|hora)|para cuando (tengo|es)|que dia (tengo|es) mi)/,
   paid: / (ya (yapee|yapie|plinee|pague|deposite|transferi|hice el (pago|yape|deposito))|envie (el|la) (pago|captura|voucher|constancia|comprobante)|adjunto (el|la) (voucher|constancia|comprobante)|aqui (esta )?(el|la) (voucher|constancia|captura|comprobante))/,
-  menu: /^ (menu|inicio|opciones|ayuda|empezar)$/,
+  menu: /^ (menu|inicio|opciones|ayuda|empezar|info|informacion|mas informacion|quiero informacion|quisiera informacion|pido informacion)( por favor)? $/,
+  question: / (una|tengo una|hacer una|le hago una|tengo una pequena) (consulta|pregunta|duda)( por favor)? $/,
 };
 
 export function detect(text) {

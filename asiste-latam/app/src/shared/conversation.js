@@ -439,6 +439,7 @@ export function handle(ctx) {
     const p = parseWhen(t, nowMs, clinic.tz);
     if (p && !hit.cancel && !hit.price) { offer(p); return out; }
   }
+  if (S.step === 'waitlist_ask' && /^(si|claro|ok|dale)\b/.test(norm(t))) hit.confirm = true;
   if (S.step === 'when') {
     const svc = matchService(t, clinic.services);
     if (svc) S.serviceId = svc.id;
@@ -482,7 +483,7 @@ export function handle(ctx) {
     if (hit.deny) { say(`Perfecto, ${W.la} ${W.cita} se mantiene. Le esperamos.`); reset(); return out; }
   }
   if (S.step === 'offer_book') {
-    if (hit.confirm || hit.book) { const sv = S.serviceId ? svcById(clinic, S.serviceId) : null; startBooking(t, { service: matchService(t, clinic.services) || sv }); return out; }
+    if (hit.confirm || hit.book || /^(si|claro|ya|ok|dale)\b/.test(norm(t)) || parseWhen(t, nowMs, clinic.tz)) { const sv = S.serviceId ? svcById(clinic, S.serviceId) : null; startBooking(t, { service: matchService(t, clinic.services) || sv }); return out; }
     if (hit.deny) { say(`Entendido. Si necesita algo más, aquí estoy.`); reset(); return out; }
   }
   if (S.step === 'waitlist_ask') {
@@ -494,10 +495,16 @@ export function handle(ctx) {
   const svcMention = matchService(t, clinic.services);
   const when = parseWhen(t, nowMs, clinic.tz);
   const faq = matchFaq(t, clinic.faqs);
-  const onlySocial = Object.keys(hit).every((k) => ['greeting', 'thanks', 'menu', 'confirm', 'deny'].includes(k));
+  if (hit.question) delete hit.book;
+  const onlySocial = Object.keys(hit).length > 0 && Object.keys(hit).every((k) => ['greeting', 'thanks', 'menu', 'confirm', 'deny', 'question'].includes(k));
   const explicitBook = / (quiero|quisiera|necesito|agendar|reservar|separar|sacar|pedir|programar|hay (cita|turno|hora|espacio|cupo)|tienen (cita|turno|hora|espacio|cupo)) /.test(' ' + norm(t) + ' ');
   if (intro && !onlySocial) say(introLine + privacy);
 
+  const svcBeyondQuestion = hit.question ? matchService(norm(t).replace(/(una|tengo una|hacer una|le hago una|tengo una pequena) (consulta|pregunta|duda)( por favor)?\s*$/, ''), clinic.services) : svcMention;
+  if (hit.question && !svcBeyondQuestion && !when && !hit.price && !hit.hours && !hit.location) {
+    say(buttons(`Claro${name ? `, ${name}` : ''}, dígame su consulta. También puedo agendar, confirmar o cambiar su ${W.cita}.`, mainButtons()));
+    return out;
+  }
   if (hit.human || hit.complaint) { handoff(hit.complaint ? 'Reclamo o queja' : 'El paciente pidió hablar con una persona'); return out; }
   if (hit.paid) { say(`Perfecto. Envíeme por aquí la captura de la operación para que recepción la valide.`); return out; }
   if (hit.cancel) { startCancel(null); return out; }

@@ -53,6 +53,17 @@ test('precio, luego "sí" agenda con ese servicio', () => {
   assert.match(textOf(r), /Qué día/);
 });
 
+test('"sí, para el sábado temprano" después del precio ofrece horarios del sábado', () => {
+  const c = clinic();
+  const { say } = chat(c, MON_NIGHT);
+  say('¿Cuánto cuesta la limpieza?');
+  const r = say('sí, para el sábado temprano');
+  assert.equal(r.replies.at(-1).type, 'buttons');
+  assert.match(textOf(r), /Sábado 7 de noviembre/);
+  const r2 = chat(c, MON_NIGHT).say('para el viernes en la tarde');
+  assert.match(textOf(r2), /servicio/);
+});
+
 test('reprogramar y cancelar una cita existente; confirmar desde el recordatorio', () => {
   const c = clinic();
   const { store, say } = chat(c, MON_NIGHT);

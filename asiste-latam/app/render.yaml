@@ -1,0 +1,30 @@
+services:
+  - type: web
+    name: asiste
+    runtime: node
+    rootDir: asiste-latam/app
+    buildCommand: "true"
+    startCommand: npm start
+    healthCheckPath: /healthz
+    plan: starter
+    disk:
+      name: datos
+      mountPath: /var/data
+      sizeGB: 1
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: DATA_DIR
+        value: /var/data
+      - key: PUBLIC_URL
+        sync: false
+      - key: OWNER_EMAIL
+        sync: false
+      - key: OWNER_PASSWORD
+        sync: false
+      - key: DATA_KEY
+        sync: false
+      - key: WA_VERIFY_TOKEN
+        sync: false
+      - key: WA_APP_SECRET
+        sync: false

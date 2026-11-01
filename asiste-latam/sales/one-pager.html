@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Asiste · One-pager para clínicas</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600;700&display=swap">
+<style>
+  @page { size: A4; margin: 0; }
+  :root { --paper:#f5f2ec; --ink:#16211d; --ink2:#3b4641; --muted:#646d67; --line:#e0dacd; --green:#0f4c3a; --mint:#dcebe0; --terra:#b4532a; --sand:#e7b58f; }
+  * { box-sizing: border-box; }
+  body { margin: 0; font: 10.5pt/1.5 Inter, sans-serif; color: var(--ink); background: #fff; }
+  .page { width: 210mm; height: 297mm; padding: 15mm 15mm 12mm; display: flex; flex-direction: column; background: var(--paper); }
+  header { display: flex; justify-content: space-between; align-items: center; }
+  .logo { display: flex; align-items: center; gap: 8px; font-weight: 700; font-size: 14pt; }
+  .logo svg { width: 26px; height: 26px; }
+  .tag { font-size: 8.5pt; color: var(--terra); text-transform: uppercase; letter-spacing: .08em; font-weight: 600; }
+  h1 { font-family: 'Instrument Serif', serif; font-weight: 400; font-size: 30pt; line-height: 1.02; margin: 9mm 0 4mm; letter-spacing: -.01em; }
+  h1 i { color: var(--green); }
+  .lead { font-size: 11.5pt; color: var(--ink2); max-width: 125mm; margin: 0; }
+  .top { display: grid; grid-template-columns: 1fr 62mm; gap: 8mm; align-items: start; }
+  .phone { background: #ece5dd; border: 6px solid #1b1f1d; border-radius: 18px; overflow: hidden; font-size: 8.4pt; line-height: 1.35; margin-top: 6mm; }
+  .phone .bar { background: #1f3d33; color: #fff; padding: 6px 9px; font-weight: 600; font-size: 8.5pt; }
+  .phone .body { padding: 7px; display: flex; flex-direction: column; gap: 5px; }
+  .b { max-width: 88%; padding: 5px 7px; border-radius: 7px; background: #fff; }
+  .b.out { align-self: flex-end; background: #d9f6c9; }
+  .qr { display: flex; gap: 3px; justify-content: flex-end; flex-wrap: wrap; }
+  .qr span { background: #fff; color: #1f6b9a; border-radius: 5px; padding: 3px 6px; font-size: 7.5pt; }
+  h2 { font-family: 'Instrument Serif', serif; font-weight: 400; font-size: 18pt; margin: 0 0 3mm; }
+  .pains { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; border-top: 1px solid var(--ink); margin-top: 8mm; }
+  .pains div { padding: 3mm 4mm 0 0; }
+  .pains div + div { padding-left: 4mm; border-left: 1px solid var(--line); }
+  .pains b { font-family: 'Instrument Serif', serif; font-weight: 400; font-size: 13pt; color: var(--terra); display: block; }
+  .pains p { margin: 1mm 0 0; color: var(--ink2); font-size: 9.5pt; }
+  .how { margin-top: 8mm; display: grid; grid-template-columns: repeat(4, 1fr); gap: 3mm; }
+  .how div { background: #fffdf9; border: 1px solid var(--line); border-radius: 8px; padding: 3.5mm; }
+  .how span { display: inline-grid; place-items: center; width: 18px; height: 18px; border-radius: 50%; background: var(--mint); color: var(--green); font-weight: 700; font-size: 8pt; }
+  .how h3 { font-size: 10pt; margin: 2mm 0 1mm; }
+  .how p { margin: 0; font-size: 8.8pt; color: var(--ink2); }
+  .feats { margin-top: 7mm; display: grid; grid-template-columns: 1fr 1fr; gap: 1.6mm 8mm; font-size: 9.6pt; }
+  .feats div::before { content: '✓'; color: var(--green); font-weight: 700; margin-right: 6px; }
+  .bottom { margin-top: auto; padding-top: 6mm; display: grid; grid-template-columns: 1.1fr 1fr; gap: 6mm; }
+  .price { background: var(--green); color: #fff; border-radius: 10px; padding: 5mm; }
+  .price h2 { color: #fff; }
+  .price table { width: 100%; border-collapse: collapse; font-size: 9.8pt; }
+  .price td { padding: 1.2mm 0; border-bottom: 1px solid rgba(255,255,255,.15); }
+  .price td:last-child { text-align: right; font-weight: 600; }
+  .price p { margin: 2.5mm 0 0; font-size: 8.8pt; color: #cfe3d8; }
+  .pilot { border: 2px solid var(--green); border-radius: 10px; padding: 5mm; background: #fffdf9; }
+  .pilot p { margin: 0 0 2mm; color: var(--ink2); }
+  .contact { margin-top: 3mm; font-weight: 600; }
+  footer { margin-top: 5mm; font-size: 8pt; color: var(--muted); display: flex; justify-content: space-between; }
+</style>
+</head>
+<body>
+<div class="page">
+  <header>
+    <div class="logo"><svg viewBox="0 0 32 32"><rect width="32" height="32" rx="8" fill="#0f4c3a"/><path d="M9 21.5l5-11h4l5 11" fill="none" stroke="#f5f2ec" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/><path d="M12.2 17.5h7.6" stroke="#e7b58f" stroke-width="2.4" stroke-linecap="round"/></svg>Asiste</div>
+    <div class="tag">Para clínicas y consultorios en Perú</div>
+  </header>
+  <div class="top">
+    <div>
+      <h1>Su recepción por WhatsApp <i>agenda, confirma y llena la agenda.</i> También a las 11 de la noche.</h1>
+      <p class="lead">Asiste responde a sus pacientes en segundos, ofrece solo horarios que de verdad están libres, confirma un día antes con botones y cobra el adelanto por Yape o Plin. Su equipo atiende pacientes; Asiste atiende el WhatsApp.</p>
+    </div>
+    <div class="phone">
+      <div class="bar">Su clínica · en línea</div>
+      <div class="body">
+        <div class="b">Hola, ¿tienen cita para limpieza mañana en la tarde?</div>
+        <div class="b out">Buenas noches. Mañana con la Dra. Paredes tengo:<br>1) 3:00 p. m. 2) 4:30 p. m. 3) 6:15 p. m.</div>
+        <div class="qr"><span>3:00 pm</span><span>4:30 pm</span><span>6:15 pm</span></div>
+        <div class="b">La de las 4:30</div>
+        <div class="b out">Listo. Su cita quedó reservada. Le recordaré un día antes.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="pains">
+    <div><b>De noche, nadie responde</b><p>El paciente escribe a las 10 p. m. y al día siguiente ya agendó en otro lado.</p></div>
+    <div><b>15 a 30 de cada 100 no llegan</b><p>Inasistencia reportada en consultas externas de la región. Cada espacio vacío es plata perdida.</p></div>
+    <div><b>Cancelaciones vacías</b><p>Nadie tiene tiempo de llamar uno por uno a los que esperaban.</p></div>
+  </div>
+
+  <div class="how">
+    <div><span>1</span><h3>El paciente escribe</h3><p>Al WhatsApp de su clínica, a cualquier hora, como escribe siempre.</p></div>
+    <div><span>2</span><h3>Asiste agenda</h3><p>Entiende "mañana en la tarde", ofrece 3 horarios libres y registra la cita.</p></div>
+    <div><span>3</span><h3>Recuerda y confirma</h3><p>Un día antes, con botones Confirmo · Cambiar · Cancelar.</p></div>
+    <div><span>4</span><h3>Llena los huecos</h3><p>Si alguien cancela, ofrece el espacio a la lista de espera.</p></div>
+  </div>
+
+  <div class="feats">
+    <div>Agenda real por profesional, sin cruces</div>
+    <div>Adelantos por Yape o Plin (opcional)</div>
+    <div>Controles periódicos automáticos</div>
+    <div>Emergencias y reclamos pasan a su equipo</div>
+    <div>Panel con citas y monto agendado</div>
+    <div>Mensajes cifrados · Ley 29733</div>
+  </div>
+
+  <div class="bottom">
+    <div class="price">
+      <h2>Precios mensuales</h2>
+      <table>
+        <tr><td>Consultorio · 1–2 profesionales</td><td>S/ 249</td></tr>
+        <tr><td>Clínica · 3–8 profesionales</td><td>S/ 449</td></tr>
+        <tr><td>Centro médico · varias sedes</td><td>desde S/ 890</td></tr>
+      </table>
+      <p>Instalación incluida · sin permanencia · precios sin IGV</p>
+    </div>
+    <div class="pilot">
+      <h2>Piloto de 30 días</h2>
+      <p>Lo instalamos nosotros en 2 a 5 días. Si en el primer mes Asiste no agenda más de lo que cuesta, ese mes no se paga.</p>
+      <p class="contact">Godos Salvador · WhatsApp +51 900 000 000<br>hola@asiste.pe · asiste.pe</p>
+    </div>
+  </div>
+  <footer><span>Hecho en Paita, Piura — Perú</span><span>Pida su demo con el nombre de su clínica</span></footer>
+</div>
+</body>
+</html>
