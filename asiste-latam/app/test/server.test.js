@@ -144,5 +144,13 @@ test('la demo estática usa exactamente el mismo motor que la app real', async (
     assert.equal(fs.readFileSync(path.join(app, '..', 'prototype', 'shared', f), 'utf8'), fs.readFileSync(path.join(shared, f), 'utf8'), f);
   }
   const html = fs.readFileSync(path.join(app, '..', 'prototype', 'index.html'), 'utf8');
-  assert.match(html, /src="\.\/app\/main\.js"/);
+  const map = JSON.parse(html.match(/<script type="importmap">(.*?)<\/script>/s)[1]).imports;
+  for (const f of fs.readdirSync(shared)) {
+    const url = map['@asiste/shared/' + f];
+    assert.ok(url, 'falta en el archivo único: ' + f);
+    const code = Buffer.from(url.split(',')[1], 'base64').toString('utf8').replaceAll('@asiste/shared/', './');
+    assert.equal(code, fs.readFileSync(path.join(shared, f), 'utf8'), 'distinto en el archivo único: ' + f);
+  }
+  assert.ok(map['@asiste/app/main.js']);
+  assert.doesNotMatch(html, /src="\.\.?\/app\//, 'el index.html no debe depender de otros archivos');
 });

@@ -1,4 +1,4 @@
-Demo de Asiste — subir esta carpeta completa a https://app.netlify.com/drop
+Demo de Asiste. index.html es autosuficiente: basta subir ese archivo (en una carpeta) a https://app.netlify.com/drop
 
 Link por clínica:
   https://SU-LINK/?clinica=Clínica%20Dental%20San%20Miguel&ciudad=Piura&tipo=dental&pais=PE
