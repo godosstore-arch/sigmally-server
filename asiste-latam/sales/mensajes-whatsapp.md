@@ -30,7 +30,7 @@ Un dato que quizá le sirva: en consulta externa, entre 15 y 30 de cada 100 paci
 
 ## 5. Cierre (día 14)
 
-[Dra. Paredes], esta semana cierro el precio fundador para clínicas de Piura (20 % menos de por vida para las 10 primeras). Además, el primer mes es piloto: si Asiste no agenda más de lo que cuesta, no lo paga. ¿Le separo un lugar?
+[Dra. Paredes], esta semana cierro el precio fundador para clínicas de Piura: las 10 primeras pagan S/ 99 al mes (o S/ 199 si tienen 3 o más doctores) durante 12 meses. Además, el primer mes es piloto: si Asiste no agenda más de lo que cuesta, no lo paga. ¿Le separo un lugar?
 
 ## 6. Después de una visita
 

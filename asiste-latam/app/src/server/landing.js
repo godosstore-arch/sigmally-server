@@ -9,14 +9,14 @@ const CC = ['pe', 'mx', 'co', 'cl', 'ar', 'ec', 'bo', 'uy', 'py', 'cr', 'pa', 'd
 export const LANDING_PATHS = new Set(['/', ...CC.filter((c) => c !== 'pe').map((c) => `/${c}/`), ...Object.keys(SPECIALTIES).map((s) => `/para/${s}`)]);
 
 const PLANS_PE = [
-  { name: 'Consultorio', price: 'S/ 249', per: 'al mes', who: '1 a 2 profesionales', items: ['Responde y agenda por WhatsApp 24/7', 'Recordatorio con botones un día antes', 'Panel con agenda y conversaciones', 'Hasta 400 citas al mes'] },
-  { name: 'Clínica', price: 'S/ 449', per: 'al mes', who: '3 a 8 profesionales', items: ['Todo lo de Consultorio', 'Adelantos por Yape o Plin', 'Lista de espera que llena cancelaciones', 'Controles periódicos automáticos', 'Hasta 1 200 citas al mes'], featured: true },
-  { name: 'Centro médico', price: 'desde S/ 890', per: 'al mes', who: 'Varias sedes o especialidades', items: ['Todo lo de Clínica', 'Una cuenta por sede', 'Reporte mensual para gerencia', 'Soporte prioritario'] },
+  { name: 'Consultorio', price: 'S/ 149', per: 'al mes', who: '1 a 2 profesionales', items: ['Responde y agenda por WhatsApp 24/7', 'Recordatorio con botones un día antes', 'Panel con agenda y conversaciones', 'Hasta 300 citas al mes'] },
+  { name: 'Clínica', price: 'S/ 299', per: 'al mes', who: '3 a 8 profesionales', items: ['Todo lo de Consultorio', 'Adelantos por Yape o Plin', 'Lista de espera que llena cancelaciones', 'Controles periódicos automáticos', 'Hasta 900 citas al mes'], featured: true },
+  { name: 'Centro médico', price: 'desde S/ 590', per: 'al mes', who: 'Varias sedes o especialidades', items: ['Todo lo de Clínica', 'Una cuenta por sede', 'Reporte mensual para gerencia', 'Soporte prioritario'] },
 ];
 const PLANS_USD = [
-  { name: 'Consultorio', price: 'US$ 69', per: 'al mes', who: '1 a 2 profesionales', items: ['Responde y agenda por WhatsApp 24/7', 'Recordatorio con botones un día antes', 'Panel con agenda y conversaciones', 'Hasta 400 citas al mes'] },
-  { name: 'Clínica', price: 'US$ 129', per: 'al mes', who: '3 a 8 profesionales', items: ['Todo lo de Consultorio', 'Adelantos por transferencia o billetera', 'Lista de espera que llena cancelaciones', 'Controles periódicos automáticos', 'Hasta 1 200 citas al mes'], featured: true },
-  { name: 'Centro médico', price: 'desde US$ 249', per: 'al mes', who: 'Varias sedes o especialidades', items: ['Todo lo de Clínica', 'Una cuenta por sede', 'Reporte mensual para gerencia', 'Soporte prioritario'] },
+  { name: 'Consultorio', price: 'US$ 39', per: 'al mes', who: '1 a 2 profesionales', items: ['Responde y agenda por WhatsApp 24/7', 'Recordatorio con botones un día antes', 'Panel con agenda y conversaciones', 'Hasta 300 citas al mes'] },
+  { name: 'Clínica', price: 'US$ 79', per: 'al mes', who: '3 a 8 profesionales', items: ['Todo lo de Consultorio', 'Adelantos por transferencia o billetera', 'Lista de espera que llena cancelaciones', 'Controles periódicos automáticos', 'Hasta 900 citas al mes'], featured: true },
+  { name: 'Centro médico', price: 'desde US$ 159', per: 'al mes', who: 'Varias sedes o especialidades', items: ['Todo lo de Clínica', 'Una cuenta por sede', 'Reporte mensual para gerencia', 'Soporte prioritario'] },
 ];
 
 function faqs(c, W) {
@@ -131,7 +131,7 @@ export function renderLanding(pathname, brand, base) {
 
   const jsonld = [
     { '@context': 'https://schema.org', '@type': 'Organization', name: brand.name, url: base + '/', logo: base + '/assets/favicon.svg', founder: brand.founder, address: { '@type': 'PostalAddress', addressLocality: 'Paita', addressRegion: 'Piura', addressCountry: 'PE' } },
-    { '@context': 'https://schema.org', '@type': 'SoftwareApplication', name: `${brand.name}`, applicationCategory: 'BusinessApplication', operatingSystem: 'Web, WhatsApp', description: desc, offers: { '@type': 'Offer', price: isPE ? '249' : '69', priceCurrency: isPE ? 'PEN' : 'USD' }, areaServed: c.name },
+    { '@context': 'https://schema.org', '@type': 'SoftwareApplication', name: `${brand.name}`, applicationCategory: 'BusinessApplication', operatingSystem: 'Web, WhatsApp', description: desc, offers: { '@type': 'Offer', price: isPE ? '149' : '39', priceCurrency: isPE ? 'PEN' : 'USD' }, areaServed: c.name },
     { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: fq.map(([q, a]) => ({ '@type': 'Question', name: q, acceptedAnswer: { '@type': 'Answer', text: a } })) },
   ];
 
@@ -223,6 +223,7 @@ export function renderLanding(pathname, brand, base) {
   <h2>Precios claros, sin permanencia</h2>
   <p class="sub">Instalación incluida. Piloto de 30 días: si Asiste no agenda más de lo que cuesta, ese mes no se paga.${isPE ? ' Precios sin IGV.' : ' Facturamos en dólares.'}</p>
   <div class="plans">${plans.map((p) => `<div class="plan${p.featured ? ' featured' : ''}">${p.featured ? '<span class="tag">El más elegido</span>' : ''}<h3>${p.name}</h3><p class="who">${p.who}</p><p class="price">${p.price} <small>${p.per}</small></p><ul>${p.items.map((i) => `<li>${ic('check')}${e(i)}</li>`).join('')}</ul><a class="btn${p.featured ? '' : ' ghost'}" href="${e(`https://wa.me/${brand.salesWhatsApp}?text=${encodeURIComponent(`Hola, quiero empezar el piloto gratis de 30 días de Asiste con el plan ${p.name} (${p.price} ${p.per}). Mi clínica es: `)}`)}" rel="noopener">Empezar piloto gratis</a></div>`).join('')}</div>
+  ${isPE ? `<p class="founder"><b>Precio fundador:</b> las primeras 10 clínicas de Piura pagan <b>S/ 99</b> (Consultorio) o <b>S/ 199</b> (Clínica) durante 12 meses.</p>` : ''}
   <p class="note"><b>Cómo empieza:</b> toca "Empezar piloto gratis", nos escribe por WhatsApp y en 2 a 5 días le entregamos su cuenta con usuario y clave, ya configurada con sus horarios y servicios. No pedimos tarjeta para el piloto.</p>
   <p class="note">El costo de los mensajes de WhatsApp que cobra Meta por recordatorios está incluido hasta el límite de cada plan. Las respuestas a pacientes que escriben primero no tienen costo de Meta.</p>
 </section>

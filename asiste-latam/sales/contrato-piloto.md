@@ -9,7 +9,7 @@ El Proveedor brinda el servicio **Asiste**: asistente de WhatsApp que responde a
 
 ## 2. Piloto y precio
 - Piloto de 30 días desde la activación del número. Si al término el monto de citas agendadas por Asiste (según el panel, a precios de referencia de la Clínica) es menor al precio del plan, ese mes no se cobra.
-- Luego: plan [Clínica], S/ [449] mensuales + IGV, mes a mes, pagaderos dentro de los 5 días de emitida la factura.
+- Luego: plan [Clínica], S/ [299] mensuales + IGV, mes a mes, pagaderos dentro de los 5 días de emitida la factura.
 - Cualquiera de las partes puede terminar con 15 días de aviso.
 
 ## 3. Responsabilidades de la Clínica

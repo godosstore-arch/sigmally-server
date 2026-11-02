@@ -97,6 +97,7 @@ h3 { font-size: 17px; margin: 0 0 6px; letter-spacing: -0.01em; }
 .plan li { display: flex; gap: 10px; align-items: flex-start; }
 .plan li .ic { width: 18px; height: 18px; margin: 3px 0 0; flex: none; }
 .plan .btn { width: 100%; }
+.founder { margin: 22px 0 0; padding: 14px 18px; border: 1px dashed var(--terra); border-radius: 10px; background: var(--terra-bg, #f8e6dc); color: var(--ink); font-size: 15px; max-width: 60em; }
 .note { color: var(--muted); font-size: 13.5px; margin-top: 16px; max-width: 60em; }
 .compare table { width: 100%; border-collapse: collapse; font-size: 15px; background: var(--card); border: 1px solid var(--line); border-radius: var(--r); overflow: hidden; }
 .compare th, .compare td { text-align: left; padding: 14px 18px; border-bottom: 1px solid var(--line); }

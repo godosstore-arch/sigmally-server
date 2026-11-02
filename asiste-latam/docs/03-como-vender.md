@@ -60,7 +60,7 @@ Ver `sales/mensajes-whatsapp.md`. Resumen del primero:
 |---|---|
 | "Mi recepcionista ya responde." | "Perfecto, ella sigue. Asiste responde cuando ella no puede: de noche, domingos y cuando está atendiendo. Y si ella escribe, Asiste se calla." |
 | "¿Y si dice algo mal?" | "Solo ofrece horarios libres de su agenda y precios que usted carga. Si preguntan algo médico, se lo pasa a su equipo. Pruébelo ahora: escríbale lo que quiera." |
-| "Es caro." | "Con 4 citas al mes se paga. Y el piloto: si no agenda más de lo que cuesta, no paga." |
+| "Es caro." | "Desde S/ 149: con 2 citas al mes ya se paga. Y el piloto: si no agenda más de lo que cuesta, no paga." |
 | "No quiero perder mi número." | "Lo conectamos con la API oficial de Meta. Revisamos juntos si su número puede seguir en el celular." |
 | "Mis pacientes son mayores." | "Por eso es por WhatsApp, que ya usan, con botones grandes. No tienen que bajar nada." |
 | "Ya tengo un software de agenda." | "Asiste no lo reemplaza: es quien conversa por WhatsApp. Su equipo ve las citas en el panel." |
