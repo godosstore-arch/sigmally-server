@@ -147,8 +147,8 @@ export function renderLanding(pathname, brand, base) {
   const body = `
 <header class="top"><div class="wrap row">
   ${logo()}
-  <nav aria-label="Principal"><a href="#como">Cómo funciona</a><a href="#precios">Precios</a><a href="#preguntas">Preguntas</a></nav>
-  <a class="btn ghost sm" href="/demo/?pais=${c.code}&tipo=${spKey}">Ver demo</a>
+  <nav aria-label="Principal"><a href="#como">Cómo funciona</a><a href="#precios" class="keep">Precios</a><a href="#preguntas">Preguntas</a></nav>
+  <div class="top-cta">${brand.appUrl ? `<a class="btn ghost sm" href="${e(brand.appUrl.replace(/\/$/, ''))}/app/">Ingresar</a>` : ''}<a class="btn sm" href="/demo/?pais=${c.code}&tipo=${spKey}">Ver demo</a></div>
 </div></header>
 <main>
 <section class="hero"><div class="wrap grid2">
@@ -222,7 +222,8 @@ export function renderLanding(pathname, brand, base) {
 <section class="wrap block" id="precios">
   <h2>Precios claros, sin permanencia</h2>
   <p class="sub">Instalación incluida. Piloto de 30 días: si Asiste no agenda más de lo que cuesta, ese mes no se paga.${isPE ? ' Precios sin IGV.' : ' Facturamos en dólares.'}</p>
-  <div class="plans">${plans.map((p) => `<div class="plan${p.featured ? ' featured' : ''}">${p.featured ? '<span class="tag">El más elegido</span>' : ''}<h3>${p.name}</h3><p class="who">${p.who}</p><p class="price">${p.price} <small>${p.per}</small></p><ul>${p.items.map((i) => `<li>${ic('check')}${e(i)}</li>`).join('')}</ul><a class="btn${p.featured ? '' : ' ghost'}" href="${e(wa)}" rel="noopener">Empezar piloto</a></div>`).join('')}</div>
+  <div class="plans">${plans.map((p) => `<div class="plan${p.featured ? ' featured' : ''}">${p.featured ? '<span class="tag">El más elegido</span>' : ''}<h3>${p.name}</h3><p class="who">${p.who}</p><p class="price">${p.price} <small>${p.per}</small></p><ul>${p.items.map((i) => `<li>${ic('check')}${e(i)}</li>`).join('')}</ul><a class="btn${p.featured ? '' : ' ghost'}" href="${e(`https://wa.me/${brand.salesWhatsApp}?text=${encodeURIComponent(`Hola, quiero empezar el piloto gratis de 30 días de Asiste con el plan ${p.name} (${p.price} ${p.per}). Mi clínica es: `)}`)}" rel="noopener">Empezar piloto gratis</a></div>`).join('')}</div>
+  <p class="note"><b>Cómo empieza:</b> toca "Empezar piloto gratis", nos escribe por WhatsApp y en 2 a 5 días le entregamos su cuenta con usuario y clave, ya configurada con sus horarios y servicios. No pedimos tarjeta para el piloto.</p>
   <p class="note">El costo de los mensajes de WhatsApp que cobra Meta por recordatorios está incluido hasta el límite de cada plan. Las respuestas a pacientes que escriben primero no tienen costo de Meta.</p>
 </section>
 
@@ -259,7 +260,7 @@ export function renderLanding(pathname, brand, base) {
 </main>
 <footer class="foot"><div class="wrap row">
   ${logo()}
-  <p>${e(brand.tagline)}<br>Hecho en ${e(brand.city)} · <a href="mailto:${e(brand.salesEmail)}">${e(brand.salesEmail)}</a></p>
+  <p>${e(brand.tagline)}<br>Hecho en ${e(brand.city)}${brand.salesEmail ? ` · <a href="mailto:${e(brand.salesEmail)}">${e(brand.salesEmail)}</a>` : ''} · <a href="https://wa.me/${e(brand.salesWhatsApp)}" rel="noopener">WhatsApp</a></p>
   <p class="small">WhatsApp es una marca de Meta Platforms, Inc. Asiste usa la API oficial de WhatsApp Business.</p>
 </div></footer>`;
 
