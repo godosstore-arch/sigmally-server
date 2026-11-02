@@ -1,3 +1,8 @@
+// Links antiguos de demo (raíz con ?clinica=…) siguen funcionando: se envían a /demo/.
+if (/[?&]clinica=/.test(location.search) && !location.pathname.startsWith('/demo')) {
+  location.replace('/demo/' + location.search + location.hash);
+}
+
 // Calculadora de pérdidas por inasistencias (sitio público).
 (() => {
   const box = document.querySelector('.calc');

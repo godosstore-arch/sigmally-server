@@ -24,6 +24,14 @@ Producto propio para vender a clínicas y consultorios (dental, estética, fisio
 4. Haga su lista de 50 clínicas de Piura (`sales/lista-prospectos.csv`) y escriba con `sales/mensajes-whatsapp.md`.
 5. Cuando una diga sí: `docs/04-puesta-en-marcha.md`.
 
+## Página oficial + demo gratis en Netlify
+
+```bash
+cd app && npm run build:web -- https://SU-SITIO.netlify.app
+```
+
+Arrastre la carpeta `web/` a Netlify (Deploys). Queda la web de ventas en `/`, la demo en `/demo/`, y los links viejos con `?clinica=` siguen abriendo la demo.
+
 ## La demo (2 minutos)
 
 ```

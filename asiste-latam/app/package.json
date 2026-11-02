@@ -12,6 +12,7 @@
     "dev": "node --disable-warning=ExperimentalWarning --watch server.js",
     "test": "node --disable-warning=ExperimentalWarning --test test/*.test.js",
     "seed:demo": "node --disable-warning=ExperimentalWarning scripts/seed-demo.mjs",
-    "build:prototype": "node scripts/build-prototype.mjs"
+    "build:prototype": "node scripts/build-prototype.mjs",
+    "build:web": "node scripts/build-web.mjs"
   }
 }
