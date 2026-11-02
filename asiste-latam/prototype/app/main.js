@@ -135,3 +135,9 @@ async function start() {
 window.addEventListener('unhandledrejection', (ev) => { toast(ev.reason?.message || 'Ocurrió un error', 'err'); });
 setInterval(() => { if (document.visibilityState === 'visible' && me) refreshCounts(); }, 30000);
 start();
+
+// App instalable (PWA): solo si la página declara su service worker.
+const swPath = document.documentElement.dataset.sw;
+if (swPath && 'serviceWorker' in navigator && (location.protocol === 'https:' || location.hostname === 'localhost')) {
+  navigator.serviceWorker.register(swPath).catch(() => { /* el panel funciona igual sin esto */ });
+}

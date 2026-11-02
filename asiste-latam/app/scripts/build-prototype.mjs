@@ -46,7 +46,15 @@ const demo = fs.readFileSync(path.join(app, 'public', 'demo', 'index.html'), 'ut
   .replace(/<script type="module" src="\.\.\/app\/main\.js"><\/script>/,
     `<script type="importmap">${JSON.stringify({ imports })}</script>\n<script type="module">import '@asiste/app/main.js';</script>`);
 if (/\.\.\/app\//.test(demo)) throw new Error('Quedó una ruta relativa sin reemplazar');
-fs.writeFileSync(path.join(out, 'index.html'), demo);
+// App instalable (para APK con PWABuilder): si los archivos extra no se suben, la demo igual funciona.
+const pwa = demo
+  .replace('<html lang="es" data-mode="demo"', '<html lang="es" data-mode="demo" data-sw="./sw.js"')
+  .replace('<meta name="theme-color" content="#0f4c3a">', '<meta name="theme-color" content="#0f4c3a">\n<link rel="manifest" href="./manifest.webmanifest">\n<link rel="apple-touch-icon" href="./assets/apple-touch-icon.png">\n<meta name="mobile-web-app-capable" content="yes">');
+fs.writeFileSync(path.join(out, 'index.html'), pwa);
+const man = JSON.parse(fs.readFileSync(path.join(app, 'public', 'app', 'manifest.webmanifest'), 'utf8'));
+Object.assign(man, { name: `${brand.name} · Demo para clínicas`, id: './', start_url: './', scope: './', icons: man.icons.map((i) => ({ ...i, src: '.' + i.src })) });
+fs.writeFileSync(path.join(out, 'manifest.webmanifest'), JSON.stringify(man, null, 2));
+fs.copyFileSync(path.join(app, 'public', 'app', 'sw.js'), path.join(out, 'sw.js'));
 fs.writeFileSync(path.join(out, '_headers'), '/*\n  X-Robots-Tag: noindex\n  X-Content-Type-Options: nosniff\n');
 fs.writeFileSync(path.join(out, 'LEEME.txt'), `Demo de ${brand.name}. index.html es autosuficiente: basta subir ese archivo (en una carpeta) a https://app.netlify.com/drop
 
