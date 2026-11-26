@@ -6,6 +6,7 @@ const Minion = require("../bots/Minion");
 const PlayerBot = require("../bots/PlayerBot");
 const DummyPlayer = require("../bots/DummyPlayer");
 const Misc = require("../primitives/Misc");
+const World = require("../worlds/World");
 
 const IPvalidate = /((^\s*((([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5]))\s*$)|(^\s*((([0-9A-Fa-f]{1,4}:){7}([0-9A-Fa-f]{1,4}|:))|(([0-9A-Fa-f]{1,4}:){6}(:[0-9A-Fa-f]{1,4}|((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3})|:))|(([0-9A-Fa-f]{1,4}:){5}(((:[0-9A-Fa-f]{1,4}){1,2})|:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3})|:))|(([0-9A-Fa-f]{1,4}:){4}(((:[0-5A-Fa-f]{1,4}){1,3})|((:[0-9A-Fa-f]{1,4})?:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){3}(((:[0-9A-Fa-f]{1,4}){1,4})|((:[0-9A-Fa-f]{1,4}){0,2}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){2}(((:[0-9A-Fa-f]{1,4}){1,5})|((:[0-9A-Fa-f]{1,4}){0,3}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){1}(((:[0-9A-Fa-f]{1,4}){1,6})|((:[0-9A-Fa-f]{1,4}){0,4}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(:(((:[0-9A-Fa-f]{1,4}){1,7})|((:[0-9A-Fa-f]{1,4}){0,5}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:)))(%.+)?\s*$))/;
 
@@ -512,6 +513,91 @@ module.exports = (commands, chatCommands) => {
                     player.world.updateCell(cell);
                 }
                 handle.logger.print(`moved player ${player.id} to ${Math.round(x)}, ${Math.round(y)}`);
+            }
+        }),
+        genCommand({
+            name: "teams",
+            args: "[mass] [gap]",
+            desc: "put each team (tag T1, T2, T3...) in its own area, T1 on the left, centered on the map, with small mass",
+            /**
+             * @param {ServerHandle} context
+             */
+            exec: (handle, context, args) => {
+                const mass = args.length > 0 ? getFloat(args, handle, 0, "mass") : 1000;
+                const wantedGap = args.length > 1 ? getFloat(args, handle, 1, "gap") : 4000;
+                if (mass === false || wantedGap === false) return;
+                if (mass <= 0 || wantedGap <= 0) return void handle.logger.print("mass and gap must be positive");
+                let moved = 0, teamsDone = 0;
+                for (const worldId in handle.worlds) {
+                    const world = handle.worlds[worldId];
+                    /** @type {Map<number, Player[]>} */
+                    const teams = new Map();
+                    for (const player of world.players) {
+                        if (player.state !== 0 || player.ownedCells.length === 0) continue;
+                        const team = World.getTeamNumber(player);
+                        if (team === 0) continue;
+                        if (!teams.has(team)) teams.set(team, []);
+                        teams.get(team).push(player);
+                    }
+                    if (teams.size === 0) continue;
+                    const order = Array.from(teams.keys()).sort((a, b) => a - b);
+                    const border = world.border;
+                    const size = Math.sqrt(mass * 100);
+                    const margin = size * 2 + 200;
+                    const usableW = Math.max(0, border.w * 2 - margin * 2);
+                    const gap = order.length > 1 ? Math.min(wantedGap, usableW / (order.length - 1)) : 0;
+                    const step = size * 2 + 80;
+                    order.forEach((team, index) => {
+                        const members = teams.get(team).sort((a, b) => a.id - b.id);
+                        const centerX = border.x + (index - (order.length - 1) / 2) * gap;
+                        const centerY = border.y;
+                        const cols = Math.ceil(Math.sqrt(members.length));
+                        const rows = Math.ceil(members.length / cols);
+                        const color = handle.settings.worldTeamColors !== false ? World.getTeamColor(team) : null;
+                        members.forEach((player, i) => {
+                            const col = i % cols, row = Math.floor(i / cols);
+                            const inRow = Math.min(cols, members.length - row * cols);
+                            const x = centerX + (col - (inRow - 1) / 2) * step;
+                            const y = centerY + (row - (rows - 1) / 2) * step;
+                            while (player.ownedCells.length > 1)
+                                world.removeCell(player.ownedCells[player.ownedCells.length - 1]);
+                            const cell = player.ownedCells[0];
+                            world.setCellAsNotBoosting(cell);
+                            if (cell.boost) cell.boost.d = 0;
+                            cell.size = size;
+                            cell.x = Math.max(border.x - border.w + size, Math.min(border.x + border.w - size, x));
+                            cell.y = Math.max(border.y - border.h + size, Math.min(border.y + border.h - size, y));
+                            if (color !== null) { cell.color = color; player.cellColor = player.chatColor = color; }
+                            world.updateCell(cell);
+                            if (player.router) { player.router.splitAttempts = 0; player.router.ejectAttempts = 0; }
+                            moved++;
+                        });
+                        teamsDone++;
+                    });
+                }
+                if (teamsDone === 0) return void handle.logger.print("no teams found: players need the tag T1, T2, T3...");
+                handle.logger.print(`placed ${teamsDone} team${teamsDone === 1 ? "" : "s"} (${moved} players) with ${mass} mass each`);
+            }
+        }),
+        genCommand({
+            name: "teamlist",
+            args: "",
+            desc: "list the players of each team (tag T1, T2, T3...)",
+            /**
+             * @param {ServerHandle} context
+             */
+            exec: (handle, context, args) => {
+                const teams = new Map();
+                for (const id in handle.players) {
+                    const player = handle.players[id];
+                    const team = World.getTeamNumber(player);
+                    if (team === 0) continue;
+                    if (!teams.has(team)) teams.set(team, []);
+                    teams.get(team).push(`${player.id} ${player.leaderboardName || player.cellName || "?"}${player.state === 0 ? "" : " (dead)"}`);
+                }
+                if (teams.size === 0) return void handle.logger.print("no teams found: players need the tag T1, T2, T3...");
+                for (const team of Array.from(teams.keys()).sort((a, b) => a - b))
+                    handle.logger.print(`T${team}: ${teams.get(team).join(", ")}`);
             }
         }),
         genCommand({

@@ -1,3 +1,4 @@
+const World = require("../worlds/World");
 const crypto = require("crypto");
 const fs = require("fs");
 const http = require("http");
@@ -458,7 +459,8 @@ class AdminPanel {
             score: Math.round(player.score || 0),
             cells: player.ownedCells.length,
             state: player.state,
-            bot: !player.router.isExternal
+            bot: !player.router.isExternal,
+            team: World.getTeamNumber(player)
         }));
         return { ok: true, world: { id: world.id, border: world.border, cells, pellets, players } };
     }
@@ -527,6 +529,12 @@ class AdminPanel {
             <button id="btn-massall" type="button">Masa a todos</button>
             <button id="btn-killall" class="btn-danger" type="button">Matar a todos</button>
           </div>
+          <h2>Equipos (tag T1, T2, T3...)</h2>
+          <div class="row" style="display:flex;gap:8px;flex-wrap:wrap;align-items:center">
+            <label class="muted">Masa <input id="team-mass" type="number" value="1000" min="1" style="width:90px;min-width:0;padding:8px"></label>
+            <label class="muted">Separación <input id="team-gap" type="number" value="4000" min="100" style="width:90px;min-width:0;padding:8px"></label>
+          </div>
+          <button id="btn-teams" type="button">Ordenar equipos (T1 izquierda → derecha)</button>
           <p class="muted">Clic en una célula o en un jugador para seleccionarlo. Arrastra una célula para mover a ese jugador. Arrastra el fondo para moverte por el mapa. Rueda del mouse: zoom.</p>
         </aside>
       </section>
@@ -641,6 +649,8 @@ class AdminPanel {
       const actions = document.getElementById('actions');
       let snapshot = null, selected = 0, zoom = 1, panX = 0, panY = 0, dragging = null;
 
+      const TEAM_COLORS = ['#ff3b3b', '#3b7bff', '#3bdc5a', '#ffd23b', '#b13bff', '#ff8a1f', '#1fe0e0', '#ff4fc8'];
+      function teamColor(team) { return TEAM_COLORS[(team - 1) % TEAM_COLORS.length]; }
       function hex(color) { return '#' + ('000000' + (color >>> 0 & 0xffffff).toString(16)).slice(-6); }
       function view() {
         const b = snapshot.border, span = Math.max(b.w, b.h) * 2 / zoom;
@@ -674,12 +684,13 @@ class AdminPanel {
       }
 
       function renderPlayers() {
-        const players = snapshot.players.filter((p) => p.state === 0).sort((a, c) => c.score - a.score);
+        const players = snapshot.players.filter((p) => p.state === 0).sort((a, c) => ((a.team || 999) - (c.team || 999)) || (c.score - a.score));
         plist.innerHTML = '';
         for (const p of players) {
           const row = document.createElement('div');
           row.className = 'prow' + (p.id === selected ? ' sel' : '');
-          row.innerHTML = '<span>#' + p.id + ' ' + escapeHtml(p.name || '(sin nombre)') + (p.bot ? ' 🤖' : '') + '</span><span>' + p.score + '</span>';
+          const badge = p.team ? '<b style="color:' + teamColor(p.team) + '">[T' + p.team + ']</b> ' : '';
+          row.innerHTML = '<span>' + badge + '#' + p.id + ' ' + escapeHtml(p.name || '(sin nombre)') + (p.bot ? ' 🤖' : '') + '</span><span>' + p.score + '</span>';
           row.onclick = () => select(p.id);
           plist.appendChild(row);
         }
@@ -714,6 +725,11 @@ class AdminPanel {
       document.getElementById('btn-merge').onclick = () => selected && run('merge ' + selected);
       document.getElementById('btn-kill').onclick = () => selected && run('kill ' + selected);
       document.getElementById('btn-massall').onclick = () => run('massall ' + massValue());
+      document.getElementById('btn-teams').onclick = () => {
+        const mass = Math.max(1, Number(document.getElementById('team-mass').value) || 1000);
+        const gap = Math.max(100, Number(document.getElementById('team-gap').value) || 4000);
+        run('teams ' + mass + ' ' + gap);
+      };
       document.getElementById('btn-killall').onclick = () => snapshot && confirm('¿Matar a todos?') && run('killall ' + snapshot.id);
 
       function canvasPoint(event) {

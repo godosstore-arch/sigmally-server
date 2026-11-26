@@ -25,8 +25,23 @@ function getSpawnTag(player) {
     const clan = String((attrs && attrs.clan) || player.clan || "").trim().toLowerCase();
     if (clan) return clan;
     const name = String((attrs && attrs.name) || player.cellName || "");
-    const match = /^\s*[\[(]?\s*(t\d+)(?![a-z])/i.exec(name);
+    const match = /^\s*[\[(]?\s*(t\d+)(?![a-z\d])/i.exec(name);
     return match ? match[1].toLowerCase() : "";
+}
+
+/**
+ * Team number from a tag like "T1" / "t2" (clan field) or a name starting with T + number. 0 = no team.
+ * @param {Player} player
+ */
+function getTeamNumber(player) {
+    const match = /^\s*[\[(]?\s*t(\d{1,3})(?![a-z0-9])/i.exec(getSpawnTag(player));
+    return match ? Number(match[1]) : 0;
+}
+
+/** Fixed colors so each team is easy to tell apart: T1 red, T2 blue, T3 green, T4 yellow... */
+const TEAM_COLORS = [0xff3b3b, 0x3b7bff, 0x3bdc5a, 0xffd23b, 0xb13bff, 0xff8a1f, 0x1fe0e0, 0xff4fc8];
+function getTeamColor(teamNumber) {
+    return teamNumber > 0 ? TEAM_COLORS[(teamNumber - 1) % TEAM_COLORS.length] : null;
 }
 
 class World {
@@ -820,6 +835,10 @@ class World {
         this.stats.uptime = Math.floor((Date.now() - this.handle.startTime.getTime()) / 1000);
     }
 }
+
+World.getSpawnTag = getSpawnTag;
+World.getTeamNumber = getTeamNumber;
+World.getTeamColor = getTeamColor;
 
 module.exports = World;
 

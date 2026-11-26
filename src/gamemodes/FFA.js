@@ -36,7 +36,9 @@ class FFA extends Gamemode {
              this.handle.settings.minionSpawnSize :
              this.handle.settings.playerSpawnSize;
         const spawnInfo = player.world.getPlayerSpawn(size, player);
-        const color = spawnInfo.color || Misc.randomColor();
+        const World = require("../worlds/World");
+        const teamColor = this.handle.settings.worldTeamColors !== false ? World.getTeamColor(World.getTeamNumber(player)) : null;
+        const color = teamColor || spawnInfo.color || Misc.randomColor();
         const name = player.router.spawningAttributes.name || player.leaderboardName || '';
         player.cellName = player.chatName = player.leaderboardName = name;
         player.cellSkin = player.router.spawningAttributes.skin || '';
